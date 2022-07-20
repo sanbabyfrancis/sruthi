@@ -87,7 +87,7 @@ def beginListening():
 
 root = tkinter.Tk()
 root.title('ശ്രുതി')
-canvas = tkinter.Canvas(root, width=700, height=550) # window size
+canvas = tkinter.Canvas(root, width=700, height=550)
 canvas.pack()
 tk_img = ImageTk.PhotoImage(file = "splash.png")
 canvas.create_image(350, 300, image=tk_img) 
