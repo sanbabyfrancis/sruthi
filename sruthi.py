@@ -1,4 +1,5 @@
 import os
+import random
 import speech_recognition as sr
 from gtts import gTTS
 from playsound import playsound
@@ -66,6 +67,18 @@ def beginListening():
         playsound("voice.mp3")
         os.remove("voice.mp3")
 
+    def jokes():
+        lno=random.randint(0,5)
+        f=open('jokes.txt', encoding="utf8")
+        line=f.readlines()
+        txt=line[lno]
+        print(txt)
+        mal=gTTS(txt,lang='ml')
+        mal.save("voice.mp3")
+        playsound("voice.mp3")
+        os.remove("voice.mp3")
+        f.close()
+
 
     if 'പേര്' in text:
         myName()    
@@ -83,6 +96,8 @@ def beginListening():
     elif 'കാണണം' in text:
         film=text.replace('കാണണം','')
         pywhatkit.playonyt(film)
+    elif 'തമാശ' in text:
+        jokes()
 
 
 root = tkinter.Tk()
