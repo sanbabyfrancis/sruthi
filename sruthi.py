@@ -1,3 +1,4 @@
+import sqlite3
 import os
 import random
 import speech_recognition as sr
@@ -11,6 +12,9 @@ import tkinter
 from tkinter import PhotoImage
 from tkinter.ttk import *
 from PIL import ImageTk
+
+conn = sqlite3.connect('userlog.db')
+c = conn.cursor()
 
 def beginListening():
     earings=sr.Recognizer()
@@ -26,6 +30,9 @@ def beginListening():
     except:
         pass
 
+    def logEntry(query, keyword):
+        c.execute("INSERT INTO Userlog (Query, Keyword) VALUES (?, ?)", [query, keyword])
+        conn.commit()
 
     def myName():
         txt='എന്റെ പേര് ശ്രുതി'
@@ -68,7 +75,7 @@ def beginListening():
         os.remove("voice.mp3")
 
     def jokes():
-        lno=random.randint(0,5)
+        lno=random.randint(0,4)
         f=open('jokes.txt', encoding="utf8")
         line=f.readlines()
         txt=line[lno]
@@ -81,23 +88,38 @@ def beginListening():
 
 
     if 'പേര്' in text:
-        myName()    
+        myName() 
+        logEntry(text, 'പേര്')  
+
     elif 'എന്തൊക്കെയുണ്ട് വിശേഷം' in text:
         howAreYou()
+        logEntry(text, 'എന്തൊക്കെയുണ്ട് വിശേഷം')
+
     elif 'സമയം' in text:
         currentTime()
+        logEntry(text, 'സമയം')
+        
     elif 'തീയതി' in text:
         currentDate()
+        logEntry(text, 'തീയതി')
+
     elif 'ആരാണ്' in text:
         whoIs()
+        logEntry(text, 'ആരാണ്')
+
     elif 'കേൾക്കണം' in text:
         song=text.replace('കേൾക്കണം','')
         pywhatkit.playonyt(song)
+        logEntry(text, 'കേൾക്കണം')
+
     elif 'കാണണം' in text:
         film=text.replace('കാണണം','')
         pywhatkit.playonyt(film)
+        logEntry(text, 'കാണണം')
+
     elif 'തമാശ' in text:
         jokes()
+        logEntry(text, 'തമാശ')
 
 
 root = tkinter.Tk()
